@@ -81,18 +81,17 @@ public class MinionsController : MonoBehaviour
 
         SortMinions();
 
-        //KillMinions();
+        KillMinions();
 
 
 
-        EvolveMinions(3);
-
+        EvolveMinions(0.1f);
 
 
         frameCounter++;
     }
     /// <summary>
-    /// Scoring the performance of each Minion.
+    /// Scoring the performance of each Minion. The closer the height is to 1000. the better score.
     /// </summary>
     void ScoreMinions()
     {
@@ -111,11 +110,11 @@ public class MinionsController : MonoBehaviour
         Minions = Minions.OrderBy(o => o.Score).ToList();
 
     }
-    void KillMinions() // For eases, killing 50 worst
+    void KillMinions() // killing 50 worst for now
 
     {
 
-        Minions.RemoveRange(Minions.Count - 51, 50);
+        Minions.RemoveRange(0, 50);
 
     }
 
@@ -125,13 +124,14 @@ public class MinionsController : MonoBehaviour
 
     {
         List<Minion> tempList = new List<Minion>();
+        int i = 0;
         foreach (Minion minion in Minions)
 
         {
 
             float evol = Evolution * Random.value;
-
             tempList.Add(new Minion(0, minion.MinionSkills.Height + evol));
+            i++;
 
         }
         Minions.AddRange(tempList);
@@ -162,13 +162,13 @@ public class MinionsController : MonoBehaviour
 
         // make this dynamic
 
-        Debug.Log("Between 0 and 20 - " + Minions.Select(o => o.MinionSkills.Height > 0 && o.MinionSkills.Height < 20).Count());
+        Debug.Log("Between 0 and 2000 - " + Minions.Where(o => o.MinionSkills.Height > 0 && o.MinionSkills.Height < 2000).Count());
 
-        Debug.Log("Between 5 and 15 - " + Minions.Select(o => o.MinionSkills.Height > 5 && o.MinionSkills.Height < 15).Count());
+        Debug.Log("Between 500 and 1500 - " + Minions.Where(o => o.MinionSkills.Height > 500 && o.MinionSkills.Height < 1500).Count());
 
-        Debug.Log("Between 7 and 13 - " + Minions.Select(o => o.MinionSkills.Height > 7 && o.MinionSkills.Height < 13).Count());
+        Debug.Log("Between 700 and 1300 - " + Minions.Where(o => o.MinionSkills.Height > 700 && o.MinionSkills.Height < 1300).Count());
 
-        Debug.Log("Between 9 and 11 - " + Minions.Select(o => o.MinionSkills.Height > 9 && o.MinionSkills.Height < 11).Count());
+        Debug.Log("Between 900 and 1100 - " + Minions.Where(o => o.MinionSkills.Height > 900 && o.MinionSkills.Height < 1100).Count());
 
         Debug.Log("----------------------------------------------------------------------------------------");
 
