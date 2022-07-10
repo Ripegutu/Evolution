@@ -17,6 +17,7 @@ public class Skills
         Height = 0.0f;
     }
 
+
     public float Height { get; set; }
 }
 
@@ -27,7 +28,7 @@ interface IGeneric
     public Skills MinionSkills { get; set; }
 }
 
-public class Minion: IGeneric
+public class Minion : IGeneric
 {
     public Minion()
     {
@@ -41,38 +42,49 @@ public class Minion: IGeneric
         MinionSkills = new Skills(initalHeight);
     }
 
+    public Minion(GameObject minionObject)
+    {
+        Score = 0;
+        MinionSkills = new Skills();
+        this.minionObject = minionObject;
+
+    }
+
     public float Score { get; set; }
 
     public Skills MinionSkills { get; set; }
+
+    public GameObject minionObject { get; set; }
 }
 public class MinionsController : MonoBehaviour
 {
     List<Minion> Minions = new List<Minion>();
+    public GameObject minionPrefab;
 
     int frameCounter = 0;
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < 1; i++)
+        for (int i = 0; i < 1; i++)
         {
-            Minions.Add(new Minion());
+            // Instansiate (For real time test)
+            Minions.Add(new Minion(Instantiate(minionPrefab, new Vector3(1f, 1f, 1f), new Quaternion())));
         }
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (frameCounter % 1000 == 0)
-        {
-            LogResult();
-        }
+        //if (frameCounter % 1000 == 0)
+        //{
+        //    LogResult();
+        //}
 
-        ScoreMinions();
-        SortMinions();
-        KillMinions();
+        //ScoreMinions();
+        //SortMinions();
+        //KillMinions();
 
-        EvolveMinions(0.1f);
+        //EvolveMinions(0.1f);
 
         frameCounter++;
     }

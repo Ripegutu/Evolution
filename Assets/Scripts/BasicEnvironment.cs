@@ -22,7 +22,7 @@ public class BasicEnvironment : MonoBehaviour
     void generateCoins()
     {
 
-        float coinHeight = 0.1F;
+        float coinHeight = 0.5F;
 
         for (int x = 0; x < 10; x++)
         {
