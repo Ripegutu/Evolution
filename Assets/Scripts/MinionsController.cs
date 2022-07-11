@@ -5,20 +5,51 @@ using UnityEngine;
 
 
 // Puttting classes here, move to another .cs file?
+
+/// <summary>
+/// The skills of the minions. 
+/// Speed is a function of volume (scale and height)
+/// logaritmic relationship between the two. Where the speed converges when volume increases. 
+/// Speed ranging from 1 - 250
+/// Height ranges from 1 - 5
+/// sccale ranged from 1 - 5
+/// </summary>
 public class Skills
 {
-    public Skills(float InitialHeight)
+    public Skills(float initialHeight, float initialScale, float initialSpeed)
     {
-        Height = InitialHeight;
+        Height = initialHeight;
+        Scale = initialScale;
+        Speed = initialSpeed;
     }
 
-    public Skills()
+    public Skills() // Generating random skillset on start (add seed to random function in order to replicate?)
     {
-        Height = 0.0f;
+        float maxVolume =(Skills.maxHeight * Skills.maxScale);
+        float scale = Random.value * Skills.maxScale;
+        float height = maxVolume / scale;
+        Speed = NewSpeed(height * scale);
+
     }
 
 
     public float Height { get; set; }
+    public float Scale { get; set; }
+    public float Speed { get; set; }
+
+    public static float maxScale = 5.0f;
+    public static float maxHeight = 5.0f;
+
+    // c + a * ln(x)
+    readonly float c = 250.5f;
+    readonly float a = -77.0f;
+
+    float NewSpeed(float volume)
+    {
+        return c - a * Mathf.Log(volume); 
+    }
+
+
 }
 
 interface IGeneric
@@ -36,16 +67,21 @@ public class Minion : IGeneric
         MinionSkills = new Skills();
     }
 
-    public Minion(float initialScore, float initalHeight)
+    public Minion(GameObject minionObject, float initalHeight, float initialScale, float initialSpeed)
     {
-        Score = initalHeight;
-        MinionSkills = new Skills(initalHeight);
+        Score = 0;
+        MinionSkills = new Skills(initalHeight, initialScale, initialSpeed);
+
+        this.minionObject = minionObject;
     }
+
 
     public Minion(GameObject minionObject)
     {
         Score = 0;
+       
         MinionSkills = new Skills();
+
         this.minionObject = minionObject;
 
     }
@@ -119,6 +155,11 @@ public class MinionsController : MonoBehaviour
         foreach (Minion minion in Minions)
         {
             float evol = Evolution * Random.value;
+
+            // Find skill to evolve
+            // Evolve acording to ln function
+            // Generate new evolved minion
+
             tempList.Add(new Minion(0, minion.MinionSkills.Height + evol));
             i++;
         }
